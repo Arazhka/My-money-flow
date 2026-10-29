@@ -1,4 +1,4 @@
-<!doctype html><html lang="id"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"><meta name="theme-color" content="#ffeef4"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="Saccoin"><meta name="format-detection" content="telephone=no"><title>Saccoin – Catatan Pengeluaran</title>
+<!doctype html><html lang="id"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"><meta name="robots" content="noindex,nofollow"><meta name="theme-color" content="#ffeef4"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="Saccoin"><meta name="format-detection" content="telephone=no"><title>Saccoin – Catatan Pengeluaran</title>
 <link href="https://fonts.googleapis.com/css2?family=Zen+Antique&family=Shippori+Mincho:wght@400;600&family=Krona+One&family=Unbounded:wght@900&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
 <style>
@@ -48,7 +48,7 @@ th,td{padding:9px 8px;text-align:left;border-bottom:1px solid var(--line);font-s
 td.r,th.r{text-align:right;font-variant-numeric:tabular-nums}tfoot td{font-weight:600;border-top:2px solid var(--rose)}tr.ed td{background:#fdeaf1}
 .dot{display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:7px}
 .ic{background:none;border:1px solid var(--line);border-radius:7px;padding:3px 9px;cursor:pointer;font-size:13px}.ic:hover{border-color:var(--rose)}.ic.d{color:var(--shu)}
-#md,#fd{position:fixed;inset:0;background:#050820cc;z-index:40;display:none;align-items:center;justify-content:center;padding:16px}#md.on,#fd.on{display:flex}
+#md,#fd,#au{position:fixed;inset:0;background:#050820cc;z-index:40;display:none;align-items:center;justify-content:center;padding:16px}#md.on,#fd.on,#au.on{display:flex}
 .box{max-width:420px;width:100%;text-align:center;background:var(--card);border:2px solid var(--gold);border-radius:16px;padding:22px;color:var(--tx);animation:in .4s}.box h2{color:var(--rose);font-size:30px;margin-bottom:6px}
 #md .box input{margin:14px 0;font-size:22px;text-align:center}
 .ft{text-align:center;padding:26px 16px 30px;font-family:'Unbounded','Krona One','Arial Black',Impact,sans-serif;font-weight:900;font-size:clamp(11px,1.8vw,17px);color:var(--lg);letter-spacing:.03em;border-top:1px solid var(--line)}
@@ -62,12 +62,14 @@ body.snow input,body.snow select{border-color:#b9d3ef}body.snow th{background:#e
 #toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%);background:var(--ink);color:#fff;padding:10px 18px;border-radius:24px;z-index:70;opacity:0;pointer-events:none;transition:opacity .3s}#toast.on{opacity:1}
 .jp rt{font-size:.17em;letter-spacing:.35em;font-family:'Shippori Mincho',serif;color:var(--tx)}
 .hr2{display:flex;align-items:center;gap:8px}.sd{background:none;border:1px solid var(--lg);border-radius:50%;width:38px;height:38px;cursor:pointer;display:grid;place-items:center;color:var(--lg);padding:0}.sd:hover,.sd:focus-visible{background:#ffffff88;outline:none}
+#lgn{display:none}.inapp #lgn{display:grid}#lgn b{font-family:'Unbounded',sans-serif;font-size:15px}#au .box{text-align:left}#app.locked .w{visibility:hidden}
+#um{position:fixed;top:62px;right:14px;z-index:35;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:12px 14px;display:grid;gap:8px;color:var(--tx);box-shadow:0 8px 24px #0002}#um[hidden]{display:none}
 @media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
 </style></head><body>
 <svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs><path id="pt" d="M0 0C-14-12-16-34-6-44L0-38 6-44C16-34 14-12 0 0Z"/><linearGradient id="cg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#fff1b8"/><stop offset="1" stop-color="#e0a93a"/></linearGradient><g id="cn"><circle r="46" fill="url(#cg)" stroke="#b9801f" stroke-width="4"/><circle r="37" fill="none" stroke="#b9801f" stroke-width="2" opacity=".6"/><g class="fl" transform="scale(.55)" fill="#f27fab" stroke="#d9467f" stroke-width="2"><use href="#pt"/><use href="#pt" transform="rotate(72)"/><use href="#pt" transform="rotate(144)"/><use href="#pt" transform="rotate(216)"/><use href="#pt" transform="rotate(288)"/></g><g class="sn" stroke="#3d7bd9" stroke-width="5" stroke-linecap="round"><path d="M0-24V24M-21-12L21 12M-21 12L21-12"/></g></g></defs></svg>
 <canvas id="sk" aria-hidden="true"></canvas>
 <canvas id="bx" aria-hidden="true" style="position:fixed;inset:0;z-index:60;pointer-events:none;display:none"></canvas>
-<header class="hd" id="hd"><button class="logo" id="lg" aria-label="Saccoin, kembali ke beranda"><svg class="coin" viewBox="-50 -50 100 100"><use href="#cn"/></svg><span>Saccoin</span><i class="mc" style="--x:8%;--d:0s"></i><i class="mc" style="--x:40%;--d:.35s"></i><i class="mc" style="--x:75%;--d:.7s"></i></button><div class="hr2"><button class="sd" id="sd"></button><button class="flw" id="fw" aria-label="Taburkan sakura"><svg viewBox="-50 -50 100 100"><g fill="#f7a8c8" stroke="#e0709c" stroke-width="1.5"><use href="#pt"/><use href="#pt" transform="rotate(72)"/><use href="#pt" transform="rotate(144)"/><use href="#pt" transform="rotate(216)"/><use href="#pt" transform="rotate(288)"/></g><circle r="6" fill="#f2c36b"/><path d="M0 0L0-14M0 0L13-4M0 0L8 11M0 0L-8 11M0 0L-13-4" stroke="#c8372d" stroke-width="1.2"/></svg></button></div></header>
+<header class="hd" id="hd"><button class="logo" id="lg" aria-label="Saccoin, kembali ke beranda"><svg class="coin" viewBox="-50 -50 100 100"><use href="#cn"/></svg><span>Saccoin</span><i class="mc" style="--x:8%;--d:0s"></i><i class="mc" style="--x:40%;--d:.35s"></i><i class="mc" style="--x:75%;--d:.7s"></i></button><div class="hr2"><button class="sd" id="sd"></button><button class="sd" id="lgn" aria-label="Akun"></button><button class="flw" id="fw" aria-label="Taburkan sakura"><svg viewBox="-50 -50 100 100"><g fill="#f7a8c8" stroke="#e0709c" stroke-width="1.5"><use href="#pt"/><use href="#pt" transform="rotate(72)"/><use href="#pt" transform="rotate(144)"/><use href="#pt" transform="rotate(216)"/><use href="#pt" transform="rotate(288)"/></g><circle r="6" fill="#f2c36b"/><path d="M0 0L0-14M0 0L13-4M0 0L8 11M0 0L-8 11M0 0L-13-4" stroke="#c8372d" stroke-width="1.2"/></svg></button></div></header>
 
 <section id="landing" class="v on"><h1 class="jp"><ruby>大金持ち<rt>おおがねもち</rt></ruby></h1><p class="dz">Catat pengeluaran mu cuy. Sakura dan Fuji punya buku catatan masing-masing.</p>
 <div class="duo">
@@ -92,6 +94,11 @@ body.snow input,body.snow select{border-color:#b9d3ef}body.snow th{background:#e
 <label>Keterangan<input id="k" maxlength="60" placeholder="mis. warteg, bensin, listrik, stockbit" required autocomplete="off"></label>
 <label>Kategori<select id="c"></select></label><div id="pv"></div>
 <div class="row"><button class="btn" id="sb">Tambah</button><button type="button" class="btn o" id="cn">Batal</button></div></form></div></div>
+<div id="au" role="dialog" aria-modal="true" aria-labelledby="at"><div class="box"><h2 id="at" style="text-align:center">Masuk</h2><div class="k" id="asub" style="text-align:center;margin-bottom:12px"></div>
+<form id="af"><label>Nama<input id="an" autocomplete="username" maxlength="30" required></label><label>Kata sandi<input id="ap" type="password" autocomplete="current-password" required></label>
+<div id="ae" role="alert" style="color:var(--shu);min-height:18px;font-size:14px"></div><div class="row"><button class="btn" id="asb">Masuk</button><button type="button" class="btn o" id="ab">Beranda</button></div></form>
+<button class="lnk" id="ar" type="button" hidden>Lupa kata sandi? Reset akun</button></div></div>
+<div id="um" hidden><div class="k" id="un"></div><button class="btn o" id="lo" type="button">Keluar</button></div>
 <div id="toast" role="status"></div>
 <div id="md" role="dialog" aria-modal="true" aria-labelledby="mt"><div class="box"><h2 id="mt">Modal bulan ini bos</h2><div class="k" id="mm"></div><input id="mi" inputmode="numeric" placeholder="5.000.000" aria-label="Modal bulan ini"><button class="btn" id="ms">Simpan modal</button></div></div>
 
@@ -106,8 +113,8 @@ let now=new Date();const pad=n=>String(n).padStart(2,'0');const cm=()=>{now=new 
 const key=()=>'kakeibo:'+(snow?'snow':'sakura')+':'+mk;
 $('#c').innerHTML='<option value="">Otomatis dari keterangan</option>'+Object.keys(KAT).map(k=>`<option>${k}</option>`).join('');
 const fmt=e=>{const v=num(e.target.value);e.target.value=v?v.toLocaleString('id-ID'):''};['#mi','#j'].forEach(s=>$(s).addEventListener('input',fmt));
-function show(id){if(id=='#app'){$('#dt').hidden=true;$('#more').textContent='Selengkapnya ▾';$('#more').setAttribute('aria-expanded','false')}document.querySelectorAll('.v').forEach(v=>v.classList.remove('on'));$(id).classList.add('on');document.body.classList.toggle('inapp',id=='#app');scrollTo(0,0);P.length=0;for(let i=0;i<(id=='#landing'?16:8);i++)P.push(np(true))}
-function load(){D=S.get(key());if(!D&&!snow){const o=S.get('kakeibo:'+mk);if(o){D=o;S.set(key(),D)}}$('#bln').value=mk;const[y,m]=mk.split('-').map(Number),n=new Date(y,m,0).getDate();$('#t').min=mk+'-01';$('#t').max=mk+'-'+pad(n);resetF();if(!D)openM();else render()}
+function show(id){$('#au').classList.remove('on');$('#um').hidden=true;if(id=='#app'){$('#dt').hidden=true;$('#more').textContent='Selengkapnya ▾';$('#more').setAttribute('aria-expanded','false')}document.querySelectorAll('.v').forEach(v=>v.classList.remove('on'));$(id).classList.add('on');document.body.classList.toggle('inapp',id=='#app');scrollTo(0,0);P.length=0;for(let i=0;i<(id=='#landing'?16:8);i++)P.push(np(true))}
+function load(){const ok=authed();$('#app').classList.toggle('locked',!ok);updU();if(ok)$('#au').classList.remove('on');if(!ok){openAuth();return}D=S.get(key());if(!D&&!snow){const o=S.get('kakeibo:'+mk);if(o){D=o;S.set(key(),D)}}$('#bln').value=mk;const[y,m]=mk.split('-').map(Number),n=new Date(y,m,0).getDate();$('#t').min=mk+'-01';$('#t').max=mk+'-'+pad(n);resetF();if(!D)openM();else render()}
 function openM(){$('#mm').textContent='Bulan '+new Date(mk+'-01').toLocaleDateString('id-ID',{month:'long',year:'numeric'})+(D?' — pengeluaran tetap tersimpan':'');$('#mi').value=D?D.modal.toLocaleString('id-ID'):'';$('#md').classList.add('on');setTimeout(()=>$('#mi').focus(),50)}
 $('#ms').onclick=()=>{const v=num($('#mi').value);if(!v){$('#mi').focus();return}D=D||{items:[]};D.modal=v;S.set(key(),D);$('#md').classList.remove('on');render()};
 $('#mi').onkeydown=e=>{if(e.key=='Enter')$('#ms').click()};
@@ -172,8 +179,31 @@ if(t<1.65)requestAnimationFrame(f);else{bx.style.display='none';busy=false}})(t0
 let ac;const AC=window.AudioContext||window.webkitAudioContext,muted=()=>!!S.get('kakeibo:mute');
 function unlock(){try{ac=ac||new AC();if(ac.state=='suspended')ac.resume()}catch(e){}}
 function ching(){try{unlock();const t0=ac.currentTime;[[1568,0],[2093,.08],[2637,.16],[3136,.24]].forEach(([f,d])=>{const o=ac.createOscillator(),g=ac.createGain();o.type='triangle';o.frequency.value=f;g.gain.setValueAtTime(0,t0+d);g.gain.linearRampToValueAtTime(.22,t0+d+.01);g.gain.exponentialRampToValueAtTime(.001,t0+d+.6);o.connect(g);g.connect(ac.destination);o.start(t0+d);o.stop(t0+d+.65)})}catch(e){}}
-function say(){try{if(!('speechSynthesis' in window))return;speechSynthesis.cancel();const u=new SpeechSynthesisUtterance('Uang! Uang! Uang!');u.lang='id-ID';u.pitch=1.8;u.rate=1.15;setTimeout(()=>speechSynthesis.speak(u),350)}catch(e){}}
+function say(){try{if(!('speechSynthesis' in window))return;speechSynthesis.cancel();const u=new SpeechSynthesisUtterance('Anjayyy!');u.lang='id-ID';u.pitch=1.5;u.rate=.95;setTimeout(()=>speechSynthesis.speak(u),350)}catch(e){}}
 function money(full){if(muted())return;unlock();if(!full){ching();return}try{const a=new Audio('money.mp3');const r=a.play();if(r&&r.catch)r.catch(()=>{ching();say()})}catch(e){ching();say()}}
 function updSd(){$('#sd').innerHTML='<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 5L6 9H2v6h4l5 4z"/>'+(muted()?'<path d="M23 9l-6 6M17 9l6 6"/>':'<path d="M15.5 8.5a5 5 0 010 7M19 5a10 10 0 010 14"/>')+'</svg>';$('#sd').setAttribute('aria-label',muted()?'Nyalakan suara':'Matikan suara')}
 $('#sd').onclick=()=>{S.set('kakeibo:mute',muted()?0:1);updSd();if(!muted())ching()};updSd();
+
+/* login per halaman (tersimpan di perangkat ini) */
+const mode=()=>snow?'snow':'sakura',ak=()=>'kakeibo:acc:'+mode(),sk=()=>'kakeibo:ses:'+mode(),authed=()=>!!S.get(sk());
+const del=k=>{delete mem[k];try{localStorage.removeItem(k)}catch(e){}};
+const cyrb=s=>{let a=0xdeadbeef,b=0x41c6ce57;for(let i=0;i<s.length;i++){const c=s.charCodeAt(i);a=Math.imul(a^c,2654435761);b=Math.imul(b^c,1597334677)}a=Math.imul(a^a>>>16,2246822507)^Math.imul(b^b>>>13,3266489909);b=Math.imul(b^b>>>16,2246822507)^Math.imul(a^a>>>13,3266489909);return(4294967296*(2097151&b)+(a>>>0)).toString(16)};
+const hex=u=>[...u].map(x=>x.toString(16).padStart(2,'0')).join('');
+const rnd=()=>{try{return hex(crypto.getRandomValues(new Uint8Array(12)))}catch(e){return String(Math.random()).slice(2)+Date.now()}};
+async function hash(pw,salt){try{const en=new TextEncoder(),k=await crypto.subtle.importKey('raw',en.encode(pw),'PBKDF2',false,['deriveBits']);return hex(new Uint8Array(await crypto.subtle.deriveBits({name:'PBKDF2',hash:'SHA-256',salt:en.encode(salt),iterations:100000},k,256)))}catch(e){return 'x'+cyrb(pw+salt)}}
+function openAuth(){if(authed())return;const acc=S.get(ak());$('#at').textContent=acc?'Masuk':'Buat akun';$('#asub').textContent=(snow?'Catatan Fuji':'Catatan Sakura')+(acc?'':' · akun ini tersimpan di perangkat ini');$('#asb').textContent=acc?'Masuk':'Buat akun';$('#ap').autocomplete=acc?'current-password':'new-password';$('#ap').value='';$('#ae').textContent='';$('#ar').hidden=!acc;$('#au').classList.add('on');setTimeout(()=>$('#an').focus(),50)}
+$('#af').onsubmit=async e=>{e.preventDefault();if(authed()){$('#au').classList.remove('on');return}const u=$('#an').value.trim(),pw=$('#ap').value,acc=S.get(ak()),er=s=>$('#ae').textContent=s;
+if(!u||!pw){er('Isi nama dan kata sandi.');return}
+if(!acc){if(pw.length<4){er('Kata sandi minimal 4 karakter.');return}const salt=rnd();S.set(ak(),{u,salt,h:await hash(pw,salt)})}
+else if(u.toLowerCase()!==acc.u.toLowerCase()||await hash(pw,acc.salt)!==acc.h){er('Nama atau kata sandi salah.');$('#ap').value='';return}
+S.set(sk(),{u:S.get(ak()).u});$('#au').classList.remove('on');load()};
+$('#ab').onclick=()=>show('#landing');
+let rst=0;$('#ar').onclick=()=>{if(!rst){rst=1;$('#ar').textContent='Yakin? Data halaman ini ikut terhapus. Klik sekali lagi.';setTimeout(()=>{rst=0;$('#ar').textContent='Lupa kata sandi? Reset akun'},5000);return}
+const pre='kakeibo:'+mode()+':',leg=/^kakeibo:\d{4}-\d{2}$/;[...Object.keys(mem)].forEach(k=>{if(k.startsWith(pre)||(!snow&&leg.test(k)))del(k)});try{Object.keys(localStorage).forEach(k=>{if(k.startsWith(pre)||(!snow&&leg.test(k)))del(k)})}catch(e){}
+del(ak());del(sk());rst=0;$('#ar').textContent='Lupa kata sandi? Reset akun';D=null;openAuth()};
+function updU(){const s=S.get(sk());$('#lgn').innerHTML=s?'<b>'+esc(s.u[0].toUpperCase())+'</b>':'<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-7 8-7s8 3 8 7"/></svg>';$('#lgn').setAttribute('aria-label',s?'Akun '+s.u:'Masuk')}
+$('#lgn').onclick=()=>{const s=S.get(sk());if(!s){openAuth();return}$('#un').textContent='Halo, '+s.u+'. Akun ini sedang aktif di halaman ini.';$('#um').hidden=!$('#um').hidden};
+$('#lo').onclick=()=>{del(sk());$('#um').hidden=true;D=null;load()};
+document.addEventListener('click',e=>{if(!e.target.closest('#um,#lgn'))$('#um').hidden=true});updU();
+addEventListener('storage',e=>{if(e.key&&e.key.startsWith('kakeibo:ses:')&&$('#app').classList.contains('on'))load()});
 </script></body></html>

@@ -26,3 +26,12 @@ Berjalan di browser modern: Chrome, Safari, Edge, dan Firefox pada Windows, macO
 
 ## Efek suara
 Bunyi koin dibuat langsung di browser, jadi tidak butuh file. Ikon speaker di header untuk menyalakan atau mematikan suara. Jika Anda punya file suara sendiri yang boleh dipakai, simpan dengan nama `money.mp3` di folder yang sama dengan `index.html`; file itu akan diputar saat membuka halaman Sakura atau Fuji.
+
+## Login
+Setiap halaman (Sakura dan Fuji) punya akun sendiri: nama dan kata sandi. Saat pertama dibuka di sebuah perangkat, Anda diminta membuat akun; setelah itu cukup masuk sekali, dan login diingat di perangkat yang sama sampai Anda menekan Keluar.
+
+Catatan penting: login ini berjalan di browser dan tersimpan di perangkat, bukan di server. Ia mengunci tampilan dari orang yang meminjam atau melirik perangkat Anda, tetapi tidak melindungi dari orang yang paham teknis. Perangkat lain tidak melihat akun atau data Anda, karena semuanya tersimpan per perangkat. Untuk perlindungan sungguhan pada websitenya, gunakan layanan seperti Cloudflare Access.
+
+`robots.txt` dan tag `noindex` meminta mesin pencari tidak mendaftarkan halaman ini.
+
+Aturan login: satu halaman hanya punya satu akun, dan selama akun itu sedang login, halaman tersebut tidak bisa dipakai untuk login atau membuat akun lagi (juga di tab lain pada browser yang sama). Untuk masuk dengan akun lain, tekan Keluar dulu. Aturan ini berlaku per perangkat dan browser.
