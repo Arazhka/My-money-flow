@@ -1,6 +1,6 @@
 <!doctype html><html lang="id"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"><meta name="robots" content="noindex,nofollow"><meta name="theme-color" content="#ffeef4"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="Saccoin"><meta name="format-detection" content="telephone=no"><title>Saccoin – Catatan Pengeluaran</title>
 <link href="https://fonts.googleapis.com/css2?family=Zen+Antique&family=Shippori+Mincho:wght@400;600&family=Krona+One&family=Unbounded:wght@900&display=swap" rel="stylesheet">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script><script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.117.3/dist/umd/supabase.js"></script><script src="config.js"></script>
 <style>
 :root{--ink:#0d1233;--sk:#f4a6c3;--rose:#d9467f;--gold:#f2c36b;--shu:#c8372d;--iv:#fff3f7;--card:#fffdfe;--line:#f3d3e0;--tx:#2a2540;--mut:#6f6a85;--lg:#b3235f;color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
 *{box-sizing:border-box}html{-webkit-text-size-adjust:100%}html,body{margin:0;color:var(--tx);font-family:'Shippori Mincho','Hiragino Mincho ProN',Georgia,serif}
@@ -97,7 +97,7 @@ body.snow input,body.snow select{border-color:#b9d3ef}body.snow th{background:#e
 <div id="au" role="dialog" aria-modal="true" aria-labelledby="at"><div class="box"><h2 id="at" style="text-align:center">Masuk</h2><div class="k" id="asub" style="text-align:center;margin-bottom:12px"></div>
 <form id="af"><label>Nama<input id="an" autocomplete="username" maxlength="30" required></label><label>Kata sandi<input id="ap" type="password" autocomplete="current-password" required></label>
 <div id="ae" role="alert" style="color:var(--shu);min-height:18px;font-size:14px"></div><div class="row"><button class="btn" id="asb">Masuk</button><button type="button" class="btn o" id="ab">Beranda</button></div></form>
-<button class="lnk" id="ar" type="button" hidden>Lupa kata sandi? Reset akun</button></div></div>
+<button class="lnk" id="ar" type="button" hidden>Lupa kata sandi? Reset akun</button><button class="lnk" id="ar2" type="button" hidden></button></div></div>
 <div id="um" hidden><div class="k" id="un"></div><button class="btn o" id="lo" type="button">Keluar</button></div>
 <div id="toast" role="status"></div>
 <div id="md" role="dialog" aria-modal="true" aria-labelledby="mt"><div class="box"><h2 id="mt">Modal bulan ini bos</h2><div class="k" id="mm"></div><input id="mi" inputmode="numeric" placeholder="5.000.000" aria-label="Modal bulan ini"><button class="btn" id="ms">Simpan modal</button></div></div>
@@ -206,4 +206,43 @@ $('#lgn').onclick=()=>{const s=S.get(sk());if(!s){openAuth();return}$('#un').tex
 $('#lo').onclick=()=>{del(sk());$('#um').hidden=true;D=null;load()};
 document.addEventListener('click',e=>{if(!e.target.closest('#um,#lgn'))$('#um').hidden=true});updU();
 addEventListener('storage',e=>{if(e.key&&e.key.startsWith('kakeibo:ses:')&&$('#app').classList.contains('on'))load()});
+
+/* sinkronisasi cloud (Supabase): aktif bila config.js diisi */
+const CFG=window.SACCOIN||{},CLOUD=!!(CFG.url&&CFG.key&&window.supabase);
+if(CLOUD){
+const cli={},sb=()=>cli[mode()]||(cli[mode()]=supabase.createClient(CFG.url,CFG.key,{auth:{storageKey:'sb-saccoin-'+mode(),persistSession:true,autoRefreshToken:true}}));
+let uid=null,chn=null,creating=false;
+const em=u=>{const n=u.trim().toLowerCase();return mode()+'.'+(n.replace(/[^a-z0-9]/g,'').slice(0,16)||'x')+'.'+cyrb(n).slice(0,12)+'@'+(CFG.domain||'gmail.com')};
+const row=r=>({id:r.id,t:r.t,c:r.c,k:r.k,j:Number(r.j)});
+openAuth=function(){if(authed())return;$('#at').textContent=creating?'Buat akun':'Masuk';$('#asub').textContent=(snow?'Catatan Fuji':'Catatan Sakura')+(creating?' · akun baru':' · bisa dibuka dari perangkat mana pun');$('#asb').textContent=creating?'Buat akun':'Masuk';$('#ap').autocomplete=creating?'new-password':'current-password';$('#ap').value='';$('#ae').textContent='';$('#ar').hidden=true;$('#ar2').hidden=false;$('#ar2').textContent=creating?'Sudah punya akun? Masuk':'Belum punya akun? Buat akun';$('#au').classList.add('on');setTimeout(()=>$('#an').focus(),50)};
+$('#ar2').onclick=()=>{creating=!creating;openAuth()};
+async function migrateAll(id){const c=sb(),pre='kakeibo:'+mode()+':',leg=/^kakeibo:\d{4}-\d{2}$/,ks=new Set(Object.keys(mem));try{Object.keys(localStorage).forEach(k=>ks.add(k))}catch(e){}
+for(const k of ks){const ok=(!snow&&leg.test(k))||(k.startsWith(pre)&&/\d{4}-\d{2}$/.test(k));if(!ok)continue;const L=S.get(k),m=k.slice(-7);if(!L||!L.modal)continue;await c.from('modal').upsert({user_id:id,month:m,amount:L.modal},{onConflict:'user_id,month'});if(L.items&&L.items.length)await c.from('expense').insert(L.items.map(x=>({user_id:id,month:m,t:x.t,c:x.c,k:x.k,j:x.j})))}}
+$('#af').onsubmit=async e=>{e.preventDefault();if(authed()){$('#au').classList.remove('on');return}
+const u=$('#an').value.trim(),pw=$('#ap').value,er=s=>$('#ae').textContent=s;if(!u||!pw){er('Isi nama dan kata sandi.');return}
+if(creating&&pw.length<6){er('Kata sandi minimal 6 karakter.');return}
+$('#asb').disabled=true;try{const c=sb(),e2=em(u),r=creating?await c.auth.signUp({email:e2,password:pw}):await c.auth.signInWithPassword({email:e2,password:pw});
+if(r.error)throw r.error;if(!r.data.session)throw new Error('confirm email');if(creating)await migrateAll(r.data.user.id);S.set(sk(),{u});creating=false;$('#au').classList.remove('on');load()}
+catch(x){const m=(x.message||'').toLowerCase();er(m.includes('invalid login')?'Nama atau kata sandi salah.':m.includes('already')?'Nama sudah dipakai. Pilih Masuk.':m.includes('confirm')?'Di Supabase, matikan "Confirm email" (lihat panduan).':m.includes('invalid')?'Alamat tidak diterima. Ubah "domain" di config.js.':'Gagal: '+(x.message||'coba lagi'))}$('#asb').disabled=false};
+const fetchMonth=async()=>{const c=sb();const[m,x]=await Promise.all([c.from('modal').select('amount').eq('month',mk).maybeSingle(),c.from('expense').select('id,t,c,k,j').eq('month',mk).order('t').order('id')]);
+if(m.error||x.error){toast('Gagal memuat data. Cek koneksi.');return}
+D=m.data?{modal:Number(m.data.amount),items:x.data.map(row)}:null;if(!D){if(!$('#md').classList.contains('on'))openM()}else render()};
+const subscribe=()=>{const c=sb();if(chn){chn.c.removeChannel(chn.h);chn=null}
+const h=c.channel('saccoin-'+mode()+'-'+uid).on('postgres_changes',{event:'*',schema:'public',table:'expense'},p=>{if(!D)return;
+if(p.eventType=='DELETE')D.items=D.items.filter(x=>x.id!=p.old.id);else{if(p.new.month!=mk)return;const o=row(p.new),i=D.items.findIndex(x=>x.id==o.id);if(i>=0)D.items[i]=o;else D.items.push(o)}render()})
+.on('postgres_changes',{event:'*',schema:'public',table:'modal'},p=>{const r=p.new;if(r&&r.month==mk){D=D||{items:[]};D.modal=Number(r.amount);render()}}).subscribe();chn={c,h}};
+load=async function(){const ok=authed();$('#app').classList.toggle('locked',!ok);updU();if(!ok){openAuth();return}
+const c=sb(),{data:{session}}=await c.auth.getSession();if(!session){del(sk());updU();$('#app').classList.add('locked');openAuth();return}
+uid=session.user.id;$('#au').classList.remove('on');$('#bln').value=mk;const[y,m]=mk.split('-').map(Number),n=new Date(y,m,0).getDate();$('#t').min=mk+'-01';$('#t').max=mk+'-'+pad(n);resetF();await fetchMonth();subscribe()};
+$('#ms').onclick=async()=>{const v=num($('#mi').value);if(!v){$('#mi').focus();return}const{error}=await sb().from('modal').upsert({user_id:uid,month:mk,amount:v},{onConflict:'user_id,month'});if(error){toast('Gagal menyimpan modal');return}D=D||{items:[]};D.modal=v;$('#md').classList.remove('on');render()};
+$('#f').onsubmit=async e=>{e.preventDefault();const j=num($('#j').value),k=$('#k').value.trim();if(!j||!k||!D)return;const o={t:$('#t').value,c:$('#c').value||detect(k)||'Jajan',k,j},w=ed,c=sb();
+const r=w?await c.from('expense').update(o).eq('id',w).select().single():await c.from('expense').insert({...o,month:mk,user_id:uid}).select().single();
+if(r.error){toast('Gagal menyimpan pengeluaran');return}const n=row(r.data),i=D.items.findIndex(x=>x.id==n.id);if(i>=0)D.items[i]=n;else D.items.push(n);closeF();render();toast(w?'Perubahan disimpan':'Pengeluaran tersimpan');if(!w)money(false)};
+$('#tb').onclick=async e=>{const d=e.target.closest('[data-d]'),b=e.target.closest('[data-e]');
+if(d){const id=d.dataset.d,{error}=await sb().from('expense').delete().eq('id',id);if(error){toast('Gagal menghapus');return}D.items=D.items.filter(x=>x.id!=id);if(ed==id)resetF();render()}
+if(b){const x=D.items.find(x=>x.id==b.dataset.e);ed=x.id;$('#t').value=x.t;$('#k').value=x.k;$('#j').value=x.j.toLocaleString('id-ID');$('#c').value=KAT[x.c]?x.c:'';$('#sb').textContent='Simpan perubahan';$('#ft').textContent='Edit pengeluaran';upd();render();openF()}};
+$('#lo').onclick=async()=>{$('#um').hidden=true;try{await sb().auth.signOut()}catch(e){}if(chn){chn.c.removeChannel(chn.h);chn=null}del(sk());D=null;load()};
+$('#lgn').onclick=()=>{const s=S.get(sk());if(!s){openAuth();return}$('#un').textContent='Halo, '+s.u+'. Data tersinkron antar perangkat.';$('#um').hidden=!$('#um').hidden};
+document.addEventListener('visibilitychange',()=>{if(!document.hidden&&uid&&authed()&&$('#app').classList.contains('on'))fetchMonth()});
+}
 </script></body></html>
