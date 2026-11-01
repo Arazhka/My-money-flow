@@ -34,4 +34,13 @@ Catatan penting: login ini berjalan di browser dan tersimpan di perangkat, bukan
 
 `robots.txt` dan tag `noindex` meminta mesin pencari tidak mendaftarkan halaman ini.
 
-Aturan login: satu halaman hanya punya satu akun, dan selama akun itu sedang login, halaman tersebut tidak bisa dipakai untuk login atau membuat akun lagi (juga di tab lain pada browser yang sama). Untuk masuk dengan akun lain, tekan Keluar dulu. Aturan ini berlaku per perangkat dan browser.
+Aturan login (mode lokal): satu halaman hanya punya satu akun, dan selama akun itu sedang login, halaman tersebut tidak bisa dipakai untuk login atau membuat akun lagi (juga di tab lain pada browser yang sama). Untuk masuk dengan akun lain, tekan Keluar dulu. Aturan ini berlaku per perangkat dan browser.
+
+## Sinkronisasi antar perangkat (opsional)
+Isi `config.js` dengan proyek Supabase Anda agar data tersinkron realtime di semua perangkat. Langkahnya ada di `PANDUAN-SINKRONISASI.md`; tabel dibuat dengan `supabase-setup.sql`. Jika `config.js` dibiarkan kosong, aplikasi berjalan dalam mode lokal seperti sebelumnya.
+
+## Saldo bawaan dan pemasukan
+Saat bulan berganti, saldo akhir bulan lalu otomatis menjadi saldo bawaan bulan baru. Hanya analisis pengeluaran (pie chart, grafik harian, tabel) yang dimulai dari nol tiap bulan. Pemasukan dicatat lewat tombol "+ Pemasukan", dan tambahan modal di tengah bulan lewat "Tambahkan modal". Pengguna sinkronisasi cloud perlu menjalankan `supabase-update.sql` sekali.
+
+## Aplikasi (PWA) dan keamanan
+Lihat `PANDUAN-PASANG-APLIKASI.md` untuk memasang di layar utama, dan `PANDUAN-KEAMANAN.md` untuk langkah pengamanan.
